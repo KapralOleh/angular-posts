@@ -40,14 +40,14 @@ export class UsersPageComponent implements OnInit {
     });
   }
 
+  trackByUserId(index: number, user: IUser): string {
+    return `${index}_${user.id}`;
+  }
+
   private openDetailedDialogByRoute(): void {
     const id = this.actRoute.snapshot.params.id;
     if (id) {
       this.openDetailedDialog(+id);
     }
-  }
-
-  trackByUserId(index: number, user: IUser): string {
-    return `${index}_${user.id}`;
   }
 }

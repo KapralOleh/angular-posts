@@ -43,6 +43,7 @@ describe('#DetailedUserDialogComponent', () => {
     it('should call goToPost method', () => {
       component.goToPost('1');
 
+      expect(dialogRef.close).toHaveBeenCalled();
       expect(router.navigateByUrl).toHaveBeenCalledWith('/posts/1');
     });
   });

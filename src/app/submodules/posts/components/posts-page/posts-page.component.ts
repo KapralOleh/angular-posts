@@ -6,6 +6,7 @@ import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dia
 import { DetailedPostDialogComponent } from '../detailed-post-dialog/detailed-post-dialog.component';
 import { UserService } from '@shared/services/user.service';
 import { DeletePostDialogComponent } from '../delete-post-dialog/delete-post-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-posts-page',
@@ -22,7 +23,8 @@ export class PostsPageComponent implements OnInit {
     private dataProviderService: DataProviderService,
     public dialog: MatDialog,
     private userService: UserService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private actRoute: ActivatedRoute,
     ) { }
 
   ngOnInit(): void {
@@ -30,6 +32,8 @@ export class PostsPageComponent implements OnInit {
     this.dataProviderService.getPostsWithComments().subscribe(
       (posts: IPost[]) => {
         this.posts = posts;
+
+        this.openDetailedDialogByRoute();
         this.cdr.markForCheck();
       });
   }
@@ -79,5 +83,12 @@ export class PostsPageComponent implements OnInit {
 
   trackByPostId(index: number, post: IPost): string {
     return `${index}_${post.id}`;
+  }
+
+  private openDetailedDialogByRoute(): void {
+    const id = this.actRoute.snapshot.params.id;
+    if (id) {
+      this.openDetailedDialog(+id);
+    }
   }
 }

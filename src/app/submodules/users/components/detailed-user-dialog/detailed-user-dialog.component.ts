@@ -26,6 +26,7 @@ export class DetailedUserDialogComponent {
   }
 
   goToPost(id: string): void {
+    this.dialogRef.close();
     this.router.navigateByUrl(`/posts/${id}`);
   }
 
