@@ -1,0 +1,12 @@
+<mat-card-title [textContent]="post.title"></mat-card-title>
+<mat-card-subtitle [textContent]="post.userName"></mat-card-subtitle>
+<mat-card-content [textContent]="post.body"></mat-card-content>
+<div *ngIf="post.comments.length" class="comments-container">
+  <h2>Comments:</h2>
+  <ng-container *ngFor="let comment of post.comments |slice:0:limit; trackByCommentId">
+    <strong class="comments-fields" [textContent]="comment.name"></strong>
+    <p class="comments-fields" [textContent]="comment.body"></p>
+  </ng-container>
+  <button color="primary" *ngIf="limit < post.comments.length" class="show-more" (click)="showMore()"
+    mat-raised-button>Show more comments</button>
+</div>

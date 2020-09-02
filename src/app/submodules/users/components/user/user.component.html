@@ -1,0 +1,6 @@
+<mat-card>
+  <h2 class="cursor-pointer" (click)="openDetailedDialog(user.id)" [textContent]="user.name"></h2>
+  <h3 class="cursor-pointer" (click)="openDetailedDialog(user.id)" [textContent]="user.username"></h3>
+  <strong>Email:</strong><p [textContent]="user.email"></p>
+  <strong>Company:</strong><p [textContent]="user.company.name"></p>
+</mat-card>

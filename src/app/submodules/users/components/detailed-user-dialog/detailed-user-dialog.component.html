@@ -1,0 +1,26 @@
+<h2 class="cursor-pointer" [textContent]="user.name"></h2>
+<strong>Email:</strong>
+<p [textContent]="user.email"></p>
+<strong>Phone:</strong>
+<p [textContent]="user.phone"></p>
+<strong>Website:</strong>
+<p [textContent]="user.website"></p>
+<strong>Address:</strong>
+<p>
+  <span [textContent]="user.address.street"></span>,
+  <span [textContent]="user.address.suite"></span>,
+  <span [textContent]="user.address.city"></span>,
+  <span [textContent]="user.address.zipcode"></span>
+</p>
+<strong>Company:</strong>
+<p>
+  <span [textContent]="user.company.name"></span>,
+  <span [textContent]="user.company.catchPhrase"></span>,
+</p>
+<div *ngIf="user.posts.length" class="post-container">
+  <h2>User posts:</h2>
+  <ng-container *ngFor="let post of user.posts |slice:0:limit; trackByPostId">
+    <h4 (click)="goToPost(post.id)" class="post-title" [textContent]="post.title"></h4>
+  </ng-container>
+  <button color="primary" *ngIf="limit < user.posts.length" class="show-more" (click)="showMore()" mat-raised-button>Show more posts</button>
+</div>

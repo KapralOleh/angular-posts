@@ -1,0 +1,6 @@
+<mat-card>
+  <mat-card-title class="post-title" (click)="openDetailedDialog(post.id)" [textContent]="post.title"></mat-card-title>
+  <mat-card-subtitle [textContent]="post.userName"></mat-card-subtitle>
+  <mat-card-content class="post-text" [textContent]="post.body | truncate:[50, '...']"></mat-card-content>
+  <button *ngIf="userId === post.userId" color="warn" class="delete-post" mat-raised-button (click)="deletePost(post.id)">Delete post</button>
+</mat-card>

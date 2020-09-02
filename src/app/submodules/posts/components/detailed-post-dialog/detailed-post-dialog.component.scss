@@ -1,0 +1,13 @@
+@import '../../../../assets/color.variables.scss';
+
+.show-more {
+  width: 100%;
+  color: $secondaryColor;
+}
+.comments-container {
+  overflow-y: scroll;
+  max-height: 250px;
+}
+.comments-fields {
+  text-transform: capitalize;
+}

@@ -1,35 +1,46 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { fakeAsync, tick } from '@angular/core/testing';
 
-describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  }));
+describe('#AppComponent', () => {
+  let component;
+  let userService;
+  let cdr;
+
+  beforeEach(() => {
+    userService = {
+      user: {
+        username: 'username',
+        id: 1
+      }
+    };
+    cdr = {
+      markForCheck: jasmine.createSpy('markForCheck')
+    };
+    component = new AppComponent(userService, cdr);
+  });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'angular-app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-app');
+  describe('#ngOnInit', () => {
+    it(`should call OnInit`, () => {
+      component.ngOnInit();
+
+      expect(component.username).toEqual('username');
+      expect(component.userLink).toEqual('users/1');
+    });
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('angular-app app is running!');
+  describe('#toggleSideNav', () => {
+    it(`should call toggleSideNav`, fakeAsync(() => {
+      component.toggleSideNav({
+        toggle: () => {}
+      } as any);
+
+      tick(200);
+
+      expect(cdr.markForCheck).toHaveBeenCalled();
+    }));
   });
 });

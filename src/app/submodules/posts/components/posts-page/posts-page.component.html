@@ -1,0 +1,9 @@
+<app-top-bar [title]="'Posts'">
+  <button class="create-post" mat-raised-button (click)="openCreatePost()">New post</button>
+</app-top-bar>
+<div class="content" fxLayout="row wrap" fxLayoutGap="10px grid">
+  <ng-container *ngFor="let post of posts; trackByPostId">
+    <app-post (openDeleteDialog)="openDeleteDialog($event)" (openDialog)="openDetailedDialog($event)" fxLayoutAlign="stretch stretch" fxFlex="25%" fxFlex.sm="50%" fxFlex.xs="100%" [userId]="userId"
+      [post]="post"></app-post>
+  </ng-container>
+</div>

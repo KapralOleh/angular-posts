@@ -1,0 +1,47 @@
+@import './assets/color.variables.scss';
+
+p {
+  font-family: Lato;
+}
+mat-sidenav-container, mat-sidenav-content, mat-sidenav {
+  height: 100%
+}
+mat-sidenav {
+  width: 250px;
+  background-color: $primaryColor;
+}
+a {
+  text-decoration: none;
+  color: #fff;
+}
+a:hover, a:active {
+  color: lightgrey;
+}
+mat-toolbar {
+  position: fixed;
+  z-index: 1;
+}
+main {
+  padding: 10px;
+  margin-top: 60px;
+  flex: 1;
+}
+.logo {
+  cursor: pointer;
+}
+.icon-area {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  &.active-link {
+    color: $secondaryColor;
+  }
+  mat-icon {
+    margin-right: 5px;
+  }
+}
+.mat-sidenav-content {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
