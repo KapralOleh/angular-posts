@@ -1,5 +1,5 @@
 import { UsersPageComponent } from './users-page.component';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { users, posts } from '@shared/services/json-placeholder.mock';
 
 describe('#UsersPageComponent', () => {
@@ -46,6 +46,23 @@ describe('#UsersPageComponent', () => {
       expect(dataProviderService.getUsersWithPosts).toHaveBeenCalled();
       expect(component.users).toEqual(usersMock);
       expect(cdr.markForCheck).toHaveBeenCalled();
+    });
+
+    it('getUsersWithPosts should throw error', () => {
+      dataProviderService.getUsersWithPosts.and.returnValue(throwError('error'));
+      component.ngOnInit();
+
+      expect(dataProviderService.getUsersWithPosts).toHaveBeenCalled();
+      expect(component.users).toEqual([]);
+    });
+  });
+
+  describe('#ngOnDestroy', () => {
+    it('should call ngOnDestroy method', () => {
+      component.ngOnInit();
+      component.ngOnDestroy();
+
+      expect(component['dataSubsription'].closed).toEqual(true);
     });
   });
 

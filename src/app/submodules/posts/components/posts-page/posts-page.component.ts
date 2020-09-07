@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { IPost } from '../../../shared/services/data.models';
 import { DataProviderService } from '@shared/services/data-provider.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -7,6 +7,7 @@ import { DetailedPostDialogComponent } from '../detailed-post-dialog/detailed-po
 import { UserService } from '@shared/services/user.service';
 import { DeletePostDialogComponent } from '../delete-post-dialog/delete-post-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-posts-page',
@@ -14,10 +15,11 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./posts-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PostsPageComponent implements OnInit {
+export class PostsPageComponent implements OnInit, OnDestroy {
   userId: number;
-  posts: IPost[];
+  posts: IPost[] = [];
   private lastPostId = 100;
+  private dataSubsription: Subscription;
 
   constructor(
     private dataProviderService: DataProviderService,
@@ -29,13 +31,19 @@ export class PostsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.userService.user.id;
-    this.dataProviderService.getPostsWithComments().subscribe(
+    this.dataSubsription = this.dataProviderService.getPostsWithComments().subscribe(
       (posts: IPost[]) => {
         this.posts = posts;
 
         this.openDetailedDialogByRoute();
         this.cdr.markForCheck();
+      }, (error) => {
+        console.error(error);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.dataSubsription && this.dataSubsription.unsubscribe();
   }
 
   openCreatePost(): void {
@@ -54,6 +62,8 @@ export class PostsPageComponent implements OnInit {
           this.cdr.markForCheck();
         });
       }
+    }, (error) => {
+      console.error(error);
     });
   }
 
@@ -68,6 +78,8 @@ export class PostsPageComponent implements OnInit {
           const index: number = this.posts.findIndex((post: IPost) => post.id === id);
           this.posts.splice(index, 1);
           this.cdr.markForCheck();
+        }, (error) => {
+          console.error(error);
         });
       }
     });

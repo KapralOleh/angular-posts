@@ -1,5 +1,5 @@
 import { PostsPageComponent } from './posts-page.component';
-import { of } from 'rxjs';
+import { of, throwError, Observable } from 'rxjs';
 import { users, posts, comments } from '../../../shared/services/json-placeholder.mock';
 
 describe('#PostsPageComponent', () => {
@@ -72,6 +72,14 @@ describe('#PostsPageComponent', () => {
       expect(component.posts).toEqual(postsMock);
       expect(dataProviderService.getPostsWithComments).toHaveBeenCalled();
       expect(cdr.markForCheck).toHaveBeenCalled();
+    });
+  });
+
+  describe('#ngOnDestroy', () => {
+    it('should call ngOnDestroy method', () => {
+      component.ngOnDestroy();
+
+      expect(component['dataSubsription'].closed).toEqual(true);
     });
   });
 

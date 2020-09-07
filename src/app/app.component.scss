@@ -28,6 +28,9 @@ main {
 }
 .logo {
   cursor: pointer;
+  &:focus {
+    outline: none;
+  }
 }
 .icon-area {
   display: flex;

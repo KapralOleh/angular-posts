@@ -1,0 +1,13 @@
+@import '../../assets//color.variables.scss';
+
+h1, h2 {
+ color: $primaryColor;
+ margin-bottom: 20px;
+}
+
+.container {
+  width: 80vw;
+  height: 200px;
+  margin: 50px auto 0;
+  text-align: center;
+}

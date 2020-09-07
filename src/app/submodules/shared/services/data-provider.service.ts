@@ -9,6 +9,8 @@ import { mergeMap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DataProviderService {
+  posts: IPost[];
+  users: IUser[];
 
   private readonly URL: string = 'https://jsonplaceholder.typicode.com';
 
@@ -35,17 +37,25 @@ export class DataProviderService {
   }
 
   getUsersWithPosts(): Observable<IUser[]> {
+    if (this.users) {
+      return of(this.users);
+    }
     return forkJoin([this.getUsers(), this.getPosts()]).pipe(
       mergeMap((data: [IUser[], IPost[]]) => {
         data[0].forEach((user: IUser) => {
           user.posts = data[1].filter((post: IPost) => user.id === post.userId);
         });
+
+        this.users = data[0];
         return of(data[0]);
       })
     );
   }
 
   getPostsWithComments(): Observable<IPost[]> {
+    if (this.posts) {
+      return of(this.posts);
+    }
     return forkJoin([this.getPosts(), this.getUsers(), this.getComments()]).pipe(
       mergeMap((data: [IPost[], IUser[], IComment[]]) => {
         data[0].forEach((post: IPost) => {
@@ -53,6 +63,8 @@ export class DataProviderService {
           post.userName = userData && userData.name;
           post.comments = data[2].filter((comment: IComment) => comment.postId === post.id);
         });
+
+        this.posts = data[0];
         return of(data[0]);
       })
     );

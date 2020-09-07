@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { IUser } from '@shared/services/data.models';
 import { DataProviderService } from '@shared/services/data-provider.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DetailedUserDialogComponent } from '../detailed-user-dialog/detailed-user-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-users-page',
@@ -11,9 +12,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./users-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersPageComponent implements OnInit {
-  users: IUser[];
+export class UsersPageComponent implements OnInit, OnDestroy {
+  users: IUser[] = [];
   cols: string;
+  private dataSubsription: Subscription;
 
   constructor(
     private dataProviderService: DataProviderService,
@@ -23,13 +25,19 @@ export class UsersPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dataProviderService.getUsersWithPosts().subscribe(
+    this.dataSubsription = this.dataProviderService.getUsersWithPosts().subscribe(
       (users: IUser[]) => {
         this.users = users;
 
         this.openDetailedDialogByRoute();
         this.cdr.markForCheck();
+      }, (error) => {
+        console.error(error);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.dataSubsription && this.dataSubsription.unsubscribe();
   }
 
   openDetailedDialog(id: number): void {
